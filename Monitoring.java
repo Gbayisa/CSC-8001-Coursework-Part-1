@@ -1,153 +1,143 @@
-import java.util.*;
-import java.util.List;
+package earthQuakeMonitor;
+
 import java.util.ArrayList;
-import java.util.Iterator;
-
-
 
 /**
- * Write a description of class Monitoring here.
- *
- * @author (your name)
- * @version (a version number or a date)
+* The Earthquake class represents a template for constructing earthquakes.
+*
+* @author Gideon Bayisa
+* @version 1.0 (2019.11.10)
+*/
+
+/**
+ * Constructor for objects of class Monitoring
  */
+public class Monitoring {
+	// creating instances of monitoring class
+	ArrayList<Observatory> instances = new ArrayList<Observatory>();
 
-public class Monitoring
-{ // creating instances of monitoring class
-    // instance variables - replace the example below with your own
-   
-    private ArrayList<Observatory> instances = new ArrayList<Observatory>();
-             
-    Earthquake valdivia = new Earthquake(9.5, -39.813889, -73.245833, 1960); //american observatory
-    Earthquake princeWilliam = new Earthquake(9.2, 60.615, -147.168056, 1964); //american observatory
-    Earthquake sumatra = new Earthquake(9.2, 0, 102, 2004); //Asian Observatory
-    Earthquake tohoku = new Earthquake(9.1, 38.9, 140.683333, 2011); //Asian Observatory
-   
-    //String name, String country, int year, String area
-    Observatory america = new Observatory("Berkeley Observatory", "United States", 1955, "4000 sq.km" );
-    Observatory asia = new Observatory("Seoul Observatory", "South Korea", 1977, "4000 sq.km" );
-   
-    /**
-     * Constructor for objects of class Monitoring
-     */
-    public Monitoring()
-    {
-        america.addToList(valdivia);
-        america.addToList(princeWilliam);
-        asia.addToList(sumatra);
-        asia.addToList(tohoku);
-    }
-   
-   
-    public void addToList(Observatory newObservatory){
-        instances.add(america);
-        instances.add(asia);
-    }    
-   
-    public ArrayList<Observatory> getInstances(){
-     return instances;  
-    }
-     //monitoring --> observatory
-    //public List<Obsevatory> instances.<Earthquake> events = GFreeze.getInstance().getFrozen();
-     //public Observatory();
+	/**
+	 *
+	 * @return An arraylist of observatories.
+	 */
+	public ArrayList<Observatory> getInstances() {
+		return instances;
+	}
 
-   
-   
-    // how to collect the largest average magnitude from the observatory
-    public Observatory largestAvgMag() {
-        double maxAvg = 0.0;
-        double avg;
-        int maxObs = 0;
-       
-        for(int i=0; i<instances.size();i++) {
-            avg = instances.get(i).getAvgMag();
-            if(avg > maxAvg) {
-            maxAvg = avg;
-            maxObs = i;
-            }
-        }
-        return instances.get(maxObs);
-            //double magnitude = earthquake.getMagnitude();
-    // if (magnitude > filter) {
-    // results.add(earthquake);        
-        }
-       
-   
-   
-    //return type earthquake not double
-   
-    public Earthquake largestMagRecorded() {
-        Earthquake earthquake;
-        Earthquake maxQuake = null;
-        double maxMag = 0.0;
-        double mag = 0.0;
-        //int maxObs = 0;
-        for(int i=0; i<instances.size(); i++) {
-         Observatory observatory = instances.get(i);
-         Earthquake reading = observatory.getMaximumEarthquake();//
-        if(mag > maxMag) {
-          maxMag = mag;
-          maxQuake = reading;
-   
-          //earthquake = instances.get(i).getMaximumEarthquake();
-         
-                //instances.get(i).events.get(i).getMagnitude();
-           
-           //  public double getMaximumMagnitude() {
-           //    double maximum = 0.0;
-           // for(int i=0; i<events.size();i++){
-                             
-           //  Earthquake earthquake = events.get(i);
-           //  double magnitude = earthquake.getMagnitude();
-           //   if(magnitude > maximum) {
-           //   maximum = magnitude;            
-           
-            }
-       
-            //return Observatory.getMaximumEarthquake();
-       
-        //Store largest earthquake object
-        //For each earthquake in the list, compare to current largest
-        //If bigger, replace, else carry on
-               
-        }
-       
-        return maxQuake;
-        // Earthquake earthquake = events.get(i);
-         //double magnitude = earthquake.getMagnitude();
-         //if(magnitude > maximum) {
-           //  maximum = magnitude;
-       
-   }
+	/**
+	 * This method is responsible of finding an observatory in the arraylist of
+	 * observatory instances based on the parameter name It returns the index of the
+	 * observatory with a given name, within the arraylist.
+	 * 
+	 * @param name indicates the parameter name of the observatory.
+	 * @return index Index within the arraylist.
+	 */
+	public Integer findObservatory(String name) {
 
-   
-   public ArrayList<Earthquake> getListOfAllEarthquakes(double filter) {
-       ArrayList<Observatory> instances = new ArrayList<Observatory>();
-       ArrayList<Earthquake> ledger = new ArrayList<Earthquake>();
-       double mag = 0.0;
-       for(int i=0; i<instances.size();i++){
-         Observatory observatory = instances.get(i);
-         
-         //ledger.add(observatory.getListOfAllEarthquakes(filter));
-         //ArrayList<Earthquake> currentQuake = 
-        for(int j =0; i<observatory.getListOfAllEarthquakes(filter).size();i++){
-         //if (observatory.magnitude > filter) {
-          Earthquake earthquake = getListOfAllEarthquakes(filter).get(i);   
-          ledger.add(earthquake);
-        // }
-         // System.out.println(events.get(i));  
-          // add.america and .asia to separate the two observatories
-      }  
-       
- 
-    }
-   
-      return ledger;
-  }
+		Integer index = null;
+		for (int i = 0; i < instances.size(); i++) {
+			if (instances.get(i).getName().equals(name)) {
+				index = i;
+				break;
+			}
+		}
+		return index;
+	}
 
-   
-   
-}   
-   
+//The observatory with the largest average earthquake magnitude
+	/**
+	 * Method to find the observatory with the largest average earthquake magnitude.
+	 *
+	 * Cycles through the arraylist of observatories and uses the getAvgMag() method
+	 * to get the largest average Magnitude from the arraylist of earthquakes .
+	 *
+	 * @return instances.get(maxObs) the details corresponding to the observatory
+	 *         with the largest average earthquake within the arraylist of
+	 *         observatories.
+	 */
+	public Observatory largestAverageEarthquake() {
+		double maxAvg = 0.0;
+		double avg;
+		int maxObs = 0;
 
-   
+		for (int i = 0; i < instances.size(); i++) {
+			avg = instances.get(i).getAvgMag();
+			if (avg > maxAvg) {
+				maxAvg = avg;
+				maxObs = i;
+			}
+		}
+
+		return instances.get(maxObs);
+	}
+
+	/**
+	 * Method to find the observatory with the largest earthquake ever recorded.
+	 *
+	 * Cycles through the arraylist of observatories and uses the
+	 * getMaximumMagnitude() method to get the earthquake with the largest Magnitude
+	 * from the arraylist of earthquakes.
+	 *
+	 * Compares the magnitude value of current earthquake to the maximum magnitude
+	 * currently found and continually cycles through the arraylist of earthquakes
+	 * and setting a new maximum value every time a larger earthquake event is
+	 * found.
+	 *
+	 * Then assigns that value to the earthquake event.
+	 *
+	 * @return maxQuake Earthquake event with the largest value found from the
+	 *         arraylist of observatories.
+	 */
+
+	// The largest magnitude earthquake ever recorded.
+	public Earthquake getLargestEarthquakeEver() {
+		Earthquake maxQuake = null;
+		double maxMag = 0.0;
+		double mag = 0.0;
+
+		/**
+		 * Store the largest earthquake object. For each earthquake in the list, compare
+		 * to current largest. If bigger, replace, else carry on
+		 */
+
+		for (int i = 0; i < instances.size(); i++) {
+			Observatory observatory = instances.get(i);
+			Earthquake reading = observatory.getMaximumEarthquake();
+			mag = instances.get(i).getMaximumMagnitude();
+			if (mag > maxMag) {
+				maxMag = mag;
+				maxQuake = reading;
+			}
+		}
+		return maxQuake;
+	}
+
+	/**
+	 * Method to list of all earthquakes recorded at the observatory with a
+	 * magnitude greater than a given number. Creating a filter that stores
+	 * earthquake with values higher than a certain value.
+	 *
+	 * @param filter Value assigned to the cutoff point for earthquakes under a
+	 *               given magnitude.
+	 * @return ledger Arraylist of earthquakes with a magnitude greater than a given
+	 *         number.
+	 */
+
+	// A list of all earthquakes recorded with magnitude greater than a given number
+	public ArrayList<Earthquake> getThresholdListEarthquakes(double filter) {
+
+		// Initialize values
+		ArrayList<Earthquake> ledger = new ArrayList<Earthquake>();
+
+		for (int i = 0; i < instances.size(); i++) { // instance.size is number of observatories
+			Observatory observatory = instances.get(i);
+			for (int j = 0; j < observatory.getListOfAllEarthquakes(filter).size(); j++) {
+				// number of earthquakes within observatory, which are larger than filter
+				Earthquake earthquake = observatory.getListOfAllEarthquakes(filter).get(j);
+				ledger.add(earthquake);
+			}
+		}
+		return ledger;
+	}
+
+}

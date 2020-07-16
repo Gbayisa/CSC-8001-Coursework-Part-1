@@ -1,144 +1,233 @@
- 
+package earthQuakeMonitor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
 
-
-/**	
-Define a class MonitoringIO, with a main method which does the following:
-	• Presents the user with a menu (printed to the console) offeatures:
-	o enter observatory data;
-	o enter earthquake data;
-	o provide monitoring statistics on largest average earthquake, largest
-	earthquake ever and all earthquakes with magnitude greater than a given
-	number; or
-	o exit
-	• Takes user input from the console to choose one of the menu features
-	• Allows the user to input, via the console, the details of observatories and
-	earthquakes
-	• After executing one of the features, returns the user to the menu to choose another
-	option
-
-*/	
-
+/**
+ * The Earthquake class represents a template for constructing earthquakes.
+ *
+ * @author Gideon Bayisa
+ * @version 1.0 (2019.11.10)
+ */
 public class MonitoringIO {
-    
-   private Scanner reader;	
-    //reader = new Scanner(System.in);
-    
-  
-   
-   
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-   Monitoring monitor = new Monitoring();
-	Scanner scan = new Scanner(System.in);
 
-	
-	// Getting observatoryName input
-	System.out.print("Enter Observatory Name: ");
-	String observatoryName = scan.nextLine();
-	//System.out.println("String entered = " + observatoryName);
-	
-	
-	// Getting observatoryCountry input
-	System.out.print("Enter Observatory Country: ");
-	String observatoryCountry = scan.nextLine();
-	//System.out.println("String entered = " + observatoryCountry);
-	
-	// Getting observatoryArea input
-	System.out.print("Enter Observatory Area: ");
-	String observatoryArea = scan.nextLine();
-	//System.out.println("String entered = " + observatoryArea);
-	
-	
-	// Getting observatoryString input
-	System.out.print("Enter Observatory Year: ");
-	int observatoryYear = scan.nextInt();
-	//System.out.println("int entered = " + observatoryYear);
-	
-	
-	
-	//Getting Earthquake 
-	System.out.print("Enter Earthquake Magnitude ");
-	double earthquakeMagnitude = scan.nextDouble();
-	//System.out.println("String entered = " + earthquakeMagnitude);
-	
-	
-	// Getting observatoryCountry input
-	System.out.print("Enter Earthquake Latitude: ");
-	double earthquakeLatitude = scan.nextDouble();
-	//System.out.println("String entered = " + earthquakeLatitude);
-	
-	// Getting observatoryArea input
-	System.out.print("Enter Earthquake Longitude: ");
-	double earthquakeLongitude = scan.nextDouble();
-	//System.out.println("String entered = " + earthquakeLongitude);
-	
-	
-	// Getting observatoryString input
-	System.out.print("Enter Earthquake Year: ");
-	int earthquakeYear = scan.nextInt();
-	//System.out.println("int entered = " + earthquakeYear);
-	
+	static Monitoring monitor = new Monitoring();
+	static Scanner input = new Scanner(System.in);
 
-	
-	
-	
-	//provide monitoring statistics on the largest average earthquake
-	System.out.print("Get Largest Average Earthquake : ");
-	Observatory maxAvgQuake = monitor.largestAvgMag();
-	
-	 System.out.print(maxAvgQuake.getMaximumEarthquake()); //?
-	
-	 
-	 
-	//provide monitoring statistics on the largest ever earthquake
-	 
-	System.out.print("Get Largest Earthquake Ever: ");
-	Earthquake bigQuake = monitor.largestMagRecorded();
-	
-	 System.out.print(bigQuake.getMagnitude());
-	
-	
-	 
-	 
-	 
-	 
-//provide monitoring statistics on all earthquake with a magnitude greater than a given number.. OR
-	
-	 System.out.print("Get Largest Earthquake with Magnitude greater than x : ");
-		double x = 0.0;
-		
-		System.out.print("Enter Value for x: ");
-		double x1 = scan.nextDouble();
-	 
-	ArrayList<Earthquake> listQuake = monitor.getListOfAllEarthquakes(earthquakeMagnitude); 
-	//Observatory listQuake =  
-		earthquakeMagnitude = x1;
-		if (earthquakeMagnitude > x1) {	
-		   x1 = earthquakeMagnitude;
-		   
-		   System.out.print(listQuake);		   
-				   
-				   
-		//ArrayList<Earthquake> eventList = new ArrayList<Earthquake>();
-		 
-		//for (i=0; i<events.size(); i++) {
-		
+	/**
+	 * Main method for Console input The main method uses switch cases within a
+	 * do-while loop. External methods are used to present the user console and
+	 * simply the structure.
+	 *
+	 *
+	 * @param args
+	 */
+	public static void main(String[] args) { // throws java.io.IOException {
+
+		int option;
+		String answer;
+
+		do {
+			// user console information is printed
+			InputData();
+			option = input.nextInt();
+			// switch case is presented with 4 options.
+			switch (option) {
+			// case 1 regards user input data for observatories
+			case 1:
+
+				System.out.println("Observatory");
+
+				int observatoryYear;
+				int observatoryArea;
+
+				String observatoryName = input.nextLine();
+
+				while (observatoryName.isEmpty()) {
+					System.out.print("Nothing was entered. Please try again: ");
+					observatoryName = input.nextLine();
+				}
+
+				System.out.print("Observatory Country: ");
+				String observatoryCountry = input.nextLine();
+
+				while (observatoryCountry.isEmpty()) {
+					System.out.print("Nothing was entered. Please try again: ");
+					observatoryCountry = input.nextLine();
+				}
+
+				do {
+					System.out.print("Observatory Year: ");
+					while (!input.hasNextInt()) {
+						System.out.print("Please enter a correct year! ");
+						input.next();
+					}
+					observatoryYear = input.nextInt();
+				} while (observatoryYear <= 0 || observatoryYear > 2019);
+
+				do {
+					System.out.print("Observatory Area (in km^2): ");
+					while (!input.hasNextInt()) {
+						System.out.print("Please enter a correct Observation area! ");
+						input.next();
+					}
+					observatoryArea = input.nextInt();
+				} while (observatoryArea <= 0 || observatoryArea > 500);
+
+				ArrayList<Earthquake> earthquakes = new ArrayList<Earthquake>();
+				Observatory newObservatory = new Observatory(observatoryName, observatoryCountry, observatoryYear,
+						observatoryArea, earthquakes);
+				// Observatory from user input are added into the arraylist earthquakes.
+				monitor.instances.add(newObservatory);
+
+				break;
+
+			// case 2 regards user input for earthquakes
+			case 2:
+
+				double earthquakeMagnitude;
+				double earthquakeLatitude;
+				double earthquakeLongitude;
+				int earthquakeYear;
+
+				System.out.println("Earthquake");
+				// earthquakes need to be assigned to an observatory
+				System.out.println("Which observatory would you like to add the earthquake to?");
+				try {
+					int n = findObservatory(); //
+
+					do {
+
+						System.out.print("Earthquake Magnitude: ");
+						while (!input.hasNextDouble()) {
+							System.out.print("That's not a number!"); // prompt if an incorrect key is input
+							input.next();
+						}
+						earthquakeMagnitude = input.nextDouble();
+					} while (earthquakeMagnitude <= 0 || earthquakeMagnitude > 10);
+
+					do {
+						System.out.print("Earthquake Latitude: ");
+						while (!input.hasNextDouble()) {
+							System.out.print("That's not a number! ");
+							input.next();
+						}
+						earthquakeLatitude = input.nextDouble();
+					} while (earthquakeLatitude <= -85.05115 || earthquakeLatitude > 85);
+
+					do {
+						System.out.print("Earthquake Longitude: ");
+						while (!input.hasNextDouble()) {
+							System.out.print("That's not a number! ");
+							input.next();
+						}
+						earthquakeLongitude = input.nextDouble();
+					} while (earthquakeLongitude <= -180 || earthquakeLongitude > 180);
+
+					do {
+						System.out.print("Earthquake Year: ");
+						while (!input.hasNextInt()) {
+							System.out.print("Please enter a correct year! ");
+							input.next();
+						}
+						earthquakeYear = input.nextInt();
+					} while (earthquakeYear <= 0 || earthquakeYear > 2019);
+
+					monitor.instances.get(n).addtolistObservatory(new Earthquake(earthquakeMagnitude,
+							earthquakeLatitude, earthquakeLongitude, earthquakeYear));
+					// Observatory from user input are added into the arraylist instances.
+
+				} catch (Exception e) {
+				}
+
+				break;
+
+			case 3:
+				System.out.println("Monitoring results:");
+				// Case 3 offers the user the ability to print monitoring statistics.
+				try {
+					Observatory maxAvgQuake = monitor.largestAverageEarthquake();
+					// returns the largest average earthquake recorded.
+					System.out.println("Observatory with the largest average magnitude is: " + maxAvgQuake.toString());
+
+					Earthquake bigQuake = monitor.getLargestEarthquakeEver();
+					// returns the largest earthquake ever recorded.
+					System.out.println("Largest earthquake ever:" + bigQuake.toString());
+
+					System.out.println("Get Largest Earthquake with Magnitude greater than x: "); // returns the largest
+																									// earthquakes with
+																									// a magnitude
+																									// greater than the
+																									// user given filter
+																									// input.
+					Double answer3 = input.nextDouble();
+					ArrayList<Earthquake> greaterthan = monitor.getThresholdListEarthquakes(answer3);
+					System.out.println(
+							"All earthquakes with magnitude greater than a given number: " + greaterthan.toString());
+
+					System.out.println("which option would you like to chose next?");
+					// InputData();
+					answer = input.next();
+
+				} catch (Exception e) {
+					System.out.println("You do not have sufficient data to monitor earthquake\n"); // exception is
+																									// printed if at
+																									// least one
+																									// earthquake and
+																									// one observatory
+																									// have not been
+																									// created.
+				}
+				break;
+			case 4:
+				System.out.println("Exit"); // Case 4 offers the user the ability to exit the program
+				break;
+			default:
+				System.out.println("Not a valid input choice\n");
+				// default cases is if the user does not select one of the 4 predefined options.
+				break;
+			}
+
+		} while (option != 4); // as long as case 4 (exit) is not chosen, the program keeps running.
+		input.close(); // scanner is not closed.
+	}
+
+	/**
+	 * The method takes in the parameter name from the user input. It then uses name
+	 * to find the observatory with the same name. If user input does not match an
+	 * existing name, a prompt requests the user to input an observatory first.
+	 * 
+	 * @return locInArray index location of observatory with a given name.
+	 */
+	private static Integer findObservatory() {
+
+		String name;
+		Integer locInArray = null;
+
+		System.out.println("Please enter an observatory name: ");
+		name = input.next();
+		if (name != null) {
+			locInArray = monitor.findObservatory(name);
+			if (locInArray != null) {
+				System.out.println(("Observatory " + name + " is found "));
+			} else {
+				System.out.println("Input observatory first");
+			}
+		} else {
+			System.out.println("Input observatory name first");
 		}
-	 
-	 
-	 
-	 
-	
-	//exit
-	
-	scan.close();
-	
-	
+		return locInArray;
 
-	
+	}
+
+	/**
+	 * Method to present user with 4 options on the console.
+	 */
+	public static void InputData() {
+		System.out.println("Please enter 1 to input observatory data");
+		System.out.println("Please enter 2 to input earthquake data");
+		System.out.println("Please enter 3 to input to produce Monitoring results");
+		System.out.println("Please enter 4 to exit");
 	}
 
 }
